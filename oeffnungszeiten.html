@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+    <title>Öffnungszeiten - Obsthandel Marziniak</title>
+
+    <style>
+        body {          
+            font-family: "Rubik", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 300;
+            font-style: normal;
+            background-color: rgb(9, 104, 46);
+            margin: 0;
+        }
+
+        .background { 
+            top: 0%;
+            right: 0%;
+            left: 0%;
+            position: absolute;
+            filter: brightness(0.6);
+            width: 100vw;
+            height: 100vh;
+            margin-top: 140px;
+            z-index: -1;
+        }
+
+        .nav-bar {
+            display: flex;
+            height: 140px;
+            background-color: rgb(9, 104, 46);
+            justify-content: space-between;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .nav-bar a{
+            color: white;
+            margin-left: 10px;
+            text-decoration: none;
+        }
+
+        .nav-bar a:hover{
+            text-decoration: underline;
+            color: #ffd700;
+        }
+
+        .logo-link{
+            position: relative;
+            transform: scale(0.38);
+            margin-top: -100px;
+            left: -130px;
+        }
+
+        .online-delivery {
+            position: absolute; 
+            left: 80%;
+            top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            background-color: rgb(255, 255, 255);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .main-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: last baseline;
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 35px;
+            margin-bottom: 5px;
+            gap: 10px;
+        }
+
+        .divider {
+            color: white;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        .footer a {
+            color: #ffd700;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer img {
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        .content {
+            padding: 50px;
+            margin-top: 120px;
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            font-size: 20px;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .hours-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: #333; /* Dunkler Hintergrund für bessere Lesbarkeit */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hours-table th, .hours-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            color: #fff; /* Heller Text für besseren Kontrast */
+        }
+
+        .hours-table th {
+            background-color: #4CAF50; /* Dunkles Grün für die Kopfzeile */
+        }
+
+        .hours-table tr:nth-child(even) {
+            background-color: #2C6B2F; /* Dunklerer Grünton für gerade Zeilen */
+        }
+
+        .hours-table tr:nth-child(odd) {
+            background-color: #3E7F36; /* Mittelgrüner Farbton für ungerade Zeilen */
+        }
+
+        .hours-table tr:hover {
+            background-color: #5B9E4B; /* Heller Grünton für Hover-Effekte */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a class="logo-link" href="index.html">
+            <img src="/static/logo.png">    
+        </a>
+        <div class="online-delivery">Jetzt NEU: Online Versand</div>
+        <div class="main-links">
+            <a href="index.html">Startseite</a> <span class="divider"> |</span>
+            <a href="produkte.html">Produkte</a> <span class="divider"> |</span>
+            <a href="ueber-uns.html">Über uns</a> <span class="divider"> |</span>
+            <a href="oeffnungszeiten.html">Öffnungszeiten</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Unsere Öffnungszeiten</h1>
+
+        <p>Wir freuen uns, Sie zu unseren Öffnungszeiten in unserem Obstladen begrüßen zu dürfen! Hier sind unsere aktuellen Zeiten:</p>
+
+        <table class="hours-table">
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Öffnungszeiten</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Montag</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Dienstag</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Mittwoch</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Donnerstag</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Freitag</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Samstag</td>
+                    <td>09:00 - 14:00</td>
+                </tr>
+                <tr>
+                    <td>Sonntag</td>
+                    <td>Geschlossen</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Obsthandel Marziniak. Alle Rechte vorbehalten.</p>
+        <nav>
+            <a href="impressum.html">Impressum</a> |
+            <a href="datenschutz.html">Datenschutz</a> |
+            <a href="agb.html">AGB</a>
+        </nav>
+        <p>Kontakt: Obsthandel Marziniak, Josef-Eicher-Straße 10, 60437 Frankfurt am Main</p>
+        <p>Tel.: 069-532147 | E-Mail: <a href="mailto:info@obsthandelmarziniak.de">info@obsthandelmarziniak.de</a></p>
+        <p>Wir akzeptieren: 
+            <img src="/static/visa.png" alt="Visa" style="width: 24px; height: 24px; margin-right: 5px;">
+            Visa | 
+            <img src="/static/mastercard.png" alt="MasterCard" style="width: 24px; height: 24px; margin-right: 5px;">
+            MasterCard | 
+            <img src="/static/paypal.png" alt="PayPal" style="width: 24px; height: 24px; margin-right: 5px;">
+            PayPal
+        </p>     
+        <p>Lieferung: Kostenloser Versand ab 50€</p>
+    </footer>
+
+</body>
+</html>
