@@ -15,48 +15,59 @@ const firebaseConfig = {
   appId: "1:811091314493:web:534a200709c21d8464a754"
 };
 
-// Initialisiere Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// Firebase initialisieren
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// Funktion zum Laden der Produktdaten
-function loadProducts() {
-    const dbRef = ref(db, 'produkte'); // 'produkte' ist der Pfad in deiner Firebase-Datenbank
-    get(dbRef).then((snapshot) => {
-        if (snapshot.exists()) {
-            const products = snapshot.val();
-            displayProducts(products);
-        } else {
-            console.log("No data available");
+// Produkte aus der Datenbank abrufen und in HTML einfügen
+db.ref("produkte").once("value", snapshot => {
+    const produkteContainer = document.getElementById("produkte-container");
+    const produkte = snapshot.val();
+
+    produkte.forEach((produkt, index) => {
+        if (produkt) {  // Null-Werte überspringen
+            const produktElement = document.createElement("div");
+            produktElement.classList.add("produkt");
+            produktElement.innerHTML = `
+                <img src="${produkt.imageUrl}" alt="${produkt.name}">
+                <h3>${produkt.name}</h3>
+                <p>${produkt.preis.toFixed(2)} €</p>
+                <button onclick="addToCart(${index})">In den Warenkorb</button>
+            `;
+            produkteContainer.appendChild(produktElement);
         }
-    }).catch((error) => {
-        console.error(error);
+    });
+});
+
+// Einkaufswagen verwalten
+let einkaufswagen = [];
+
+function addToCart(index) {
+    db.ref(`produkte/${index}`).once("value", snapshot => {
+        const produkt = snapshot.val();
+        if (produkt) {
+            einkaufswagen.push(produkt);
+            updateCart();
+        }
     });
 }
 
-// Produkte anzeigen
-function displayProducts(products) {
-    const productContainer = document.getElementById("product-container"); // Der Container, wo die Produkte eingefügt werden
-    productContainer.innerHTML = ""; // Leere den Container vor dem Einfügen neuer Daten
+function removeFromCart(index) {
+    einkaufswagen.splice(index, 1);
+    updateCart();
+}
 
-    products.forEach(product => {
-        const productElement = document.createElement("div");
-        productElement.classList.add("product");
-
-        const image = document.createElement("img");
-        image.src = product.imageUrl;
-        image.alt = product.name;
-
-        const name = document.createElement("h3");
-        name.textContent = product.name;
-
-        const price = document.createElement("p");
-        price.textContent = `${product.preis}€`;
-
-        productElement.appendChild(image);
-        productElement.appendChild(name);
-        productElement.appendChild(price);
-        productContainer.appendChild(productElement);
+function updateCart() {
+    const cartContainer = document.getElementById("warenkorb-container");
+    cartContainer.innerHTML = "";
+    einkaufswagen.forEach((produkt, index) => {
+        const cartItem = document.createElement("div");
+        cartItem.classList.add("cart-item");
+        cartItem.innerHTML = `
+            <p>${produkt.name} - ${produkt.preis.toFixed(2)} €</p>
+            <button onclick="removeFromCart(${index})">Entfernen</button>
+        `;
+        cartContainer.appendChild(cartItem);
     });
 }
 
