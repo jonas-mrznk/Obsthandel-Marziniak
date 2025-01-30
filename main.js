@@ -1,69 +1,53 @@
-// Firebase-Konfiguration und Initialisierung
-const firebaseConfig = {
-  apiKey: "AIzaSyD0_hpmkDI_4b9hJYFWW4rXrL7_0_qONVE",
-  authDomain: "obsthandel-marziniak.firebaseapp.com",
-  databaseURL: "https://obsthandel-marziniak.firebaseio.com",
-  projectId: "obsthandel-marziniak",
-  storageBucket: "obsthandel-marziniak.appspot.com",
-  messagingSenderId: "811091314493",
-  appId: "1:811091314493:web:534a200709c21d8464a754"
-};
+// 🔥 Supabase Konfiguration
+const SUPABASE_URL = "https://unduayveazvnuhsxlzrr.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVuZHVheXZlYXp2bnVoc3hsenJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgyNzA4MzcsImV4cCI6MjA1Mzg0NjgzN30.k3iIMg-MuQxhtHfb6Btcywu0mDIHWhIPDpCUL5M9MTI";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Firebase initialisieren
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+// 🛒 Warenkorb als leeres Array
+let warenkorb = [];
 
-// Produkte aus der Datenbank abrufen und in HTML einfügen
-db.ref("produkte").once("value", snapshot => {
-    const produkteContainer = document.getElementById("produkte-container");
-    const produkte = snapshot.val();
+// ✅ Produkte aus Supabase laden
+async function ladeProdukte() {
+    let { data: produkte, error } = await supabase
+        .from("produkte")
+        .select("*");
 
-    produkte.forEach((produkt, index) => {
-        if (produkt) {  // Null-Werte überspringen
-            const produktElement = document.createElement("div");
-            produktElement.classList.add("produkt");
-            produktElement.innerHTML = `
-                <img src="${produkt.imageUrl}" alt="${produkt.name}">
-                <h3>${produkt.name}</h3>
-                <p>${produkt.preis.toFixed(2)} €</p>
-                <button onclick="addToCart(${index})">In den Warenkorb</button>
-            `;
-            produkteContainer.appendChild(produktElement);
-        }
-    });
-});
+    if (error) {
+        console.error("Fehler beim Laden der Produkte:", error);
+        return;
+    }
 
-// Einkaufswagen verwalten
-let einkaufswagen = [];
-
-function addToCart(index) {
-    db.ref(`produkte/${index}`).once("value", snapshot => {
-        const produkt = snapshot.val();
-        if (produkt) {
-            einkaufswagen.push(produkt);
-            updateCart();
-        }
-    });
+    // HTML aktualisieren
+    zeigeProdukte(produkte);
 }
 
-function removeFromCart(index) {
-    einkaufswagen.splice(index, 1);
-    updateCart();
-}
+// 🔄 Produkte auf der Seite anzeigen
+function zeigeProdukte(produkte) {
+    const shopContainer = document.getElementById("shop-container");
+    shopContainer.innerHTML = ""; // Alte Einträge entfernen
 
-function updateCart() {
-    const cartContainer = document.getElementById("warenkorb-container");
-    cartContainer.innerHTML = "";
-    einkaufswagen.forEach((produkt, index) => {
-        const cartItem = document.createElement("div");
-        cartItem.classList.add("cart-item");
-        cartItem.innerHTML = `
-            <p>${produkt.name} - ${produkt.preis.toFixed(2)} €</p>
-            <button onclick="removeFromCart(${index})">Entfernen</button>
+    produkte.forEach((produkt) => {
+        const produktElement = document.createElement("div");
+        produktElement.classList.add("produkt");
+
+        produktElement.innerHTML = `
+            <img src="${produkt.bild}" alt="${produkt.name}">
+            <h3>${produkt.name}</h3>
+            <p>${produkt.preis.toFixed(2)} €</p>
+            <button onclick="hinzufuegenZumWarenkorb(${produkt.id}, '${produkt.name}', ${produkt.preis})">
+                In den Warenkorb
+            </button>
         `;
-        cartContainer.appendChild(cartItem);
+
+        shopContainer.appendChild(produktElement);
     });
 }
 
-// Ruf die Funktion auf, um die Produkte zu laden
-loadProducts();
+// 🛒 Produkt zum Warenkorb hinzufügen
+function hinzufuegenZumWarenkorb(id, name, preis) {
+    warenkorb.push({ id, name, preis });
+    console.log("Warenkorb:", warenkorb);
+}
+
+// ✅ Initial Produkte laden
+ladeProdukte();
